@@ -1,29 +1,26 @@
 package hello.hello_spring.service;
 
 import hello.hello_spring.domain.Member;
+import hello.hello_spring.repository.MemberRepository;
 import hello.hello_spring.repository.MemoryMemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SpringBootTest // 스프링 컨테이너와 함꼐 실행
+@Transactional // testCase에 달면 트랜젝션을 먼저 실행하고 데이터베이스에서 롤백을 해줌 -> 디비반영 안되고 다 지워줌
 class MemberServiceIntegrationTest {
-    MemberService memberService;
-    MemoryMemberRepository memberRepository;
 
-    @BeforeEach
-    public void beforeEach() {
-        memberRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memberRepository);
-    }
+    @Autowired MemberService memberService;
+    @Autowired
+    MemberRepository memberRepository;
 
-
-    @AfterEach
-    public void afterEach() {
-        memberRepository.clearStore();
-    }
 
     @Test
     void 회원가입() {
@@ -60,13 +57,5 @@ class MemberServiceIntegrationTest {
 //        }
 
         // then
-    }
-
-    @Test
-    void findMembers() {
-    }
-
-    @Test
-    void findOne() {
     }
 }
